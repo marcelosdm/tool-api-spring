@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.marcelo.tools.entity.Tool;
-import com.marcelo.tools.exception.ToolNotFoundException;
+import com.marcelo.tools.error.NotFoundError;
 import com.marcelo.tools.repository.ToolRepository;
 
 @RestController
@@ -42,12 +42,13 @@ public class ToolController {
 	 * 
 	 * @param toolId
 	 * @return
-	 * @throws ToolNotFoundException
+	 * @throws NotFoundError
 	 */
 	@GetMapping("{id}")
-	public ResponseEntity<Tool> getToolById(@PathVariable("id") Long toolId) throws ToolNotFoundException {
+	public ResponseEntity<Tool> getToolById(@PathVariable("id") Long toolId) throws NotFoundError {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(toolRepository.findById(toolId).orElseThrow(() -> new ToolNotFoundException(toolId)));
+				.body(toolRepository.findById(toolId)
+						.orElseThrow(() -> new NotFoundError("No tool found with the id " + toolId)));
 	}
 
 	/**
@@ -67,12 +68,13 @@ public class ToolController {
 	 * @param toolId
 	 * @param toolDetails
 	 * @return
-	 * @throws ToolNotFoundException
+	 * @throws NotFoundError
 	 */
 	@PutMapping("{id}")
 	public ResponseEntity<Tool> updateTool(@PathVariable("id") Long toolId, @Valid @RequestBody Tool toolDetails)
-			throws ToolNotFoundException {
-		Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new ToolNotFoundException(toolId));
+			throws NotFoundError {
+		Tool tool = toolRepository.findById(toolId)
+				.orElseThrow(() -> new NotFoundError("No tool found with the id " + toolId));
 
 		tool.setName(toolDetails.getName());
 		tool.setDescription(toolDetails.getDescription());
@@ -89,11 +91,12 @@ public class ToolController {
 	 * 
 	 * @param toolId
 	 * @return
-	 * @throws ToolNotFoundException
+	 * @throws NotFoundError
 	 */
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> deleteTool(@PathVariable("id") Long toolId) throws ToolNotFoundException {
-		Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new ToolNotFoundException(toolId));
+	public ResponseEntity<?> deleteTool(@PathVariable("id") Long toolId) throws NotFoundError {
+		Tool tool = toolRepository.findById(toolId)
+				.orElseThrow(() -> new NotFoundError("No tool found with the id " + toolId));
 
 		toolRepository.delete(tool);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
