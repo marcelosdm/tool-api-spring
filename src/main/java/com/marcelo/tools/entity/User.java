@@ -37,13 +37,19 @@ public class User {
 
 	@NotBlank
 	private String password;
-
-	@Column(nullable = false, updatable = false)
+	
+	/**
+	 * TODO: fix field to auto generate
+	 */
+//	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
 	private Date createdAt;
 
-	@Column(nullable = false, updatable = false)
+	/**
+	 * TODO: fix field to auto generate
+	 */
+//	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
 	private Date updatedAt;
