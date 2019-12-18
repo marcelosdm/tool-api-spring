@@ -1,4 +1,4 @@
-package com.api.tools.exception;
+package com.marcelo.tools.exception;
 
 public class ToolNotFoundException extends Exception {
 

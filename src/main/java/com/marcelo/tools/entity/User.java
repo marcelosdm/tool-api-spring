@@ -1,4 +1,4 @@
-package com.api.tools.entity;
+package com.marcelo.tools.entity;
 
 import java.util.Date;
 
