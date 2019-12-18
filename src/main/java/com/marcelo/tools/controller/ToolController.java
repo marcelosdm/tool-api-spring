@@ -24,70 +24,78 @@ import com.marcelo.tools.repository.ToolRepository;
 @RequestMapping("/tools")
 public class ToolController {
 
-	
 	@Autowired
 	ToolRepository toolRepository;
-	
+
 	/**
 	 * Get all tools
+	 * 
 	 * @return
 	 */
 	@GetMapping
 	public ResponseEntity<List<Tool>> getAllTools() {
 		return ResponseEntity.status(HttpStatus.OK).body(toolRepository.findAll());
 	}
-	
-	/**
-	 * Create a new tool
-	 * @param tool
-	 * @return
-	 */
-	@PostMapping
-	public Tool createTool(@Valid @RequestBody Tool tool) {
-		return toolRepository.save(tool);
-	}
-	
+
 	/**
 	 * Get a tool by id
+	 * 
 	 * @param toolId
 	 * @return
 	 * @throws ToolNotFoundException
 	 */
 	@GetMapping("{id}")
-	public Tool getToolById(@PathVariable("id") Long toolId) throws ToolNotFoundException {
-		return toolRepository.findById(toolId)
-				.orElseThrow(() -> new ToolNotFoundException(toolId));
+	public ResponseEntity<Tool> getToolById(@PathVariable("id") Long toolId) throws ToolNotFoundException {
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(toolRepository.findById(toolId).orElseThrow(() -> new ToolNotFoundException(toolId)));
 	}
-	
+
+	/**
+	 * Create a new tool
+	 * 
+	 * @param tool
+	 * @return
+	 */
+	@PostMapping
+	public ResponseEntity<Tool> createTool(@Valid @RequestBody Tool tool) {
+		return ResponseEntity.status(HttpStatus.OK).body(toolRepository.save(tool));
+	}
+
 	/**
 	 * Update a tool
+	 * 
 	 * @param toolId
 	 * @param toolDetails
 	 * @return
 	 * @throws ToolNotFoundException
 	 */
 	@PutMapping("{id}")
-	public Tool updateTool(@PathVariable("id") Long toolId,
-			@Valid @RequestBody Tool toolDetails) throws ToolNotFoundException {
-		Tool tool = toolRepository.findById(toolId)
-				.orElseThrow(() -> new ToolNotFoundException(toolId));
-		
+	public ResponseEntity<Tool> updateTool(@PathVariable("id") Long toolId, @Valid @RequestBody Tool toolDetails)
+			throws ToolNotFoundException {
+		Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new ToolNotFoundException(toolId));
+
 		tool.setName(toolDetails.getName());
 		tool.setDescription(toolDetails.getDescription());
 		tool.setCategory(toolDetails.getCategory());
 		tool.setTags(toolDetails.getTags());
-		
+
 		Tool updatedTool = toolRepository.save(tool);
-		
-		return updatedTool;
+
+		return ResponseEntity.status(HttpStatus.OK).body(updatedTool);
 	}
-	
+
+	/**
+	 * Delete a tool
+	 * 
+	 * @param toolId
+	 * @return
+	 * @throws ToolNotFoundException
+	 */
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deleteTool(@PathVariable("id") Long toolId) throws ToolNotFoundException {
-		Tool tool = toolRepository.findById(toolId)
-				.orElseThrow(() -> new ToolNotFoundException(toolId));
-		
+		Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new ToolNotFoundException(toolId));
+
 		toolRepository.delete(tool);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
