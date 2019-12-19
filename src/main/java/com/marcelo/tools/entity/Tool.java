@@ -3,6 +3,8 @@ package com.marcelo.tools.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 @Entity
 @Table(name = "tools")
 public class Tool {
@@ -12,6 +14,7 @@ public class Tool {
 	private Long id;
 
 	@NotBlank
+	@UniqueElements
 	private String name;
 
 	@NotBlank
