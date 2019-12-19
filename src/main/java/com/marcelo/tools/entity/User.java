@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -33,11 +34,12 @@ public class User {
 	private String name;
 
 	@NotBlank
+	@UniqueElements
 	private String email;
 
 	@NotBlank
 	private String password;
-	
+
 	/**
 	 * TODO: fix field to auto generate
 	 */
@@ -58,7 +60,7 @@ public class User {
 		super();
 	}
 
-	public User(Long id, @NotBlank String name, @NotBlank String email, @NotBlank String password) {
+	public User(Long id, @NotBlank String name, @NotBlank @UniqueElements String email, @NotBlank String password) {
 		super();
 		this.id = id;
 		this.name = name;
