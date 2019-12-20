@@ -14,7 +14,6 @@ public class Tool {
 	private Long id;
 
 	@NotBlank
-	@UniqueElements
 	private String name;
 
 	@NotBlank

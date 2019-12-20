@@ -34,7 +34,6 @@ public class User {
 	private String name;
 
 	@NotBlank
-	@UniqueElements
 	private String email;
 
 	@NotBlank
